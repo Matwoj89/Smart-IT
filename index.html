@@ -2,142 +2,84 @@
 <html lang="pl">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>Smart IT – Serwis Komputerowy</title>
-  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;500;700&display=swap" rel="stylesheet">
-  <style>
-    :root {
-      --primary: #4a90e2;
-      --accent: #f5a623;
-      --dark: #333;
-      --light: #fafafa;
-      --transition: 0.3s ease;
-    }
-    * { box-sizing: border-box; margin: 0; padding: 0; }
-    body {
-      font-family: 'Poppins', sans-serif;
-      line-height: 1.6;
-      color: var(--dark);
-      background: var(--light);
-    }
-    header {
-      background: linear-gradient(135deg, var(--primary), #357ab8);
-      color: #fff;
-      text-align: center;
-      padding: 4rem 1rem;
-    }
-    header h1 {
-      font-size: 2.5rem;
-      margin-bottom: 0.5rem;
-    }
-    header p {
-      font-size: 1.2rem;
-      opacity: 0.9;
-    }
-    main {
-      max-width: 1000px;
-      margin: 2rem auto;
-      padding: 0 1rem;
-    }
-    .services {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
-      gap: 1.5rem;
-      margin-bottom: 3rem;
-    }
-    .service-card {
-      background: #fff;
-      border-radius: 8px;
-      padding: 1.5rem;
-      box-shadow: 0 4px 10px rgba(0,0,0,0.05);
-      transition: transform var(--transition), box-shadow var(--transition);
-    }
-    .service-card:hover {
-      transform: translateY(-5px);
-      box-shadow: 0 6px 14px rgba(0,0,0,0.1);
-    }
-    .service-card h3 {
-      color: var(--primary);
-      margin-bottom: 0.8rem;
-      font-weight: 500;
-    }
-    .service-card p {
-      font-size: 0.95rem;
-      opacity: 0.8;
-    }
-    .contact {
-      background: var(--primary);
-      color: #fff;
-      padding: 2rem;
-      border-radius: 8px;
-      text-align: center;
-    }
-    .contact h2 {
-      margin-bottom: 1rem;
-      font-weight: 500;
-    }
-    .contact a {
-      display: inline-block;
-      margin: 0.5rem 1rem;
-      color: #fff;
-      text-decoration: none;
-      border: 2px solid #fff;
-      padding: 0.6rem 1.2rem;
-      border-radius: 4px;
-      transition: background var(--transition), color var(--transition);
-    }
-    .contact a:hover {
-      background: #fff;
-      color: var(--primary);
-    }
-    footer {
-      text-align: center;
-      padding: 1.5rem;
-      font-size: 0.9rem;
-      color: #777;
-    }
-  </style>
+  
+  <!-- SEO Meta -->
+  <meta name="description" content="Smart IT – profesjonalny serwis komputerowy w Ząbkach i okolicach. Naprawa, modernizacja, instalacje." />
+  
+  <!-- Open Graph -->
+  <meta property="og:title" content="Smart IT – Serwis Komputerowy" />
+  <meta property="og:description" content="Profesjonalny serwis komputerowy w Ząbkach. Naprawa, modernizacja, chłodzenie" />
+  <meta property="og:image" content="og-image.png" />
+  <meta property="og:url" content="https://TwojLogin.github.io" />
+  
+  <!-- Favicon -->
+  <link rel="icon" href="favicon.ico" />
+  
+  <!-- CSS -->
+  <link rel="stylesheet" href="styles.css" />
+  
+  <!-- Analytics (wstaw swój ID) -->
+  <!-- Google Analytics -->
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-XXXXXXXXXX"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+    gtag('config', 'G-XXXXXXXXXX');
+  </script>
 </head>
-<body>
+<body class="light">
 
   <header>
     <h1>Smart IT</h1>
     <p>Profesjonalny serwis komputerowy – Ząbki i okolice</p>
+    <button id="theme-toggle">🌙 Tryb ciemny/jasny</button>
   </header>
 
   <main>
     <section class="services">
-      <div class="service-card">
-        <h3>🔧 Naprawa sprzetu</h3>
-        <p>Diagnoza i usuwanie usterek w komputerach i laptopach – szybko i skutecznie.</p>
-      </div>
-      <div class="service-card">
-        <h3>💨 Konserwacja i chłodzenie</h3>
-        <p>Czyszczenie układów chłodzenia, wymiana pasty termicznej i wentylatorów.</p>
-      </div>
-      <div class="service-card">
-        <h3>🚀 Modernizacja</h3>
-        <p>Montaż SSD, RAM, kart graficznych – odświeżenie starego komputera.</p>
-      </div>
-      <div class="service-card">
-        <h3>💿 Instalacja oprogramowania</h3>
-        <p>Systemy operacyjne, sterowniki, oprogramowanie biurowe i antywirusowe.</p>
-      </div>
-      <div class="service-card">
-        <h3>🗄️ Backup & Recovery</h3>
-        <p>Tworzenie kopii zapasowych i odzyskiwanie utraconych danych.</p>
-      </div>
-      <div class="service-card">
-        <h3>🏡 Dojazd do klienta</h3>
-        <p>Wygodny serwis na miejscu – dla osób prywatnych i małych firm.</p>
-      </div>
+      <article class="card">
+        <h2>🔧 Naprawa sprzętu</h2>
+        <p>Diagnoza i usuwanie usterek w komputerach i laptopach.</p>
+        <img src="repair.webp" alt="Naprawa komputera" loading="lazy" />
+      </article>
+      <article class="card">
+        <h2>💨 Konserwacja i chłodzenie</h2>
+        <p>Czyszczenie układów chłodzenia, wymiana pasty i wentylatorów.</p>
+        <img src="cooling.webp" alt="Chłodzenie CPU" loading="lazy" />
+      </article>
+      <article class="card">
+        <h2>🚀 Modernizacja</h2>
+        <p>Montaż SSD, RAM, GPU – odświeżenie i przyspieszenie sprzętu.</p>
+        <img src="upgrade.webp" alt="Modernizacja komputera" loading="lazy" />
+      </article>
+      <article class="card">
+        <h2>💿 Instalacja oprogramowania</h2>
+        <p>Systemy operacyjne, sterowniki, programy biurowe i antywirusowe.</p>
+        <img src="software.webp" alt="Instalacja oprogramowania" loading="lazy" />
+      </article>
+      <article class="card">
+        <h2>🗄️ Backup & Recovery</h2>
+        <p>Kopie zapasowe i odzyskiwanie utraconych danych.</p>
+        <img src="backup.webp" alt="Backup danych" loading="lazy" />
+      </article>
+      <article class="card">
+        <h2>🏡 Dojazd do klienta</h2>
+        <p>Serwis w domu lub biurze – Ząbki i okolice.</p>
+        <img src="onsite.webp" alt="Serwis u klienta" loading="lazy" />
+      </article>
     </section>
 
     <section class="contact">
-      <h2>Skontaktuj się z nami</h2>
-      <p>Mateusz, Smart IT | Ząbki, woj. mazowieckie</p>
-      <a href="mailto:kontakt@smartit.pl">kontakt@smartit.pl</a>
-      <a href="tel:+48600123456">+48 600 123 456</a>
+      <h2>Kontakt</h2>
+      <form action="https://formspree.io/f/YOUR_ID" method="POST">
+        <input type="email" name="email" placeholder="Twój e-mail" required />
+        <textarea name="message" rows="4" placeholder="Treść wiadomości"></textarea>
+        <button type="submit">Wyślij</button>
+      </form>
+      <p>lub dzwoń: <a href="tel:+48600123456">+48 600 123 456</a></p>
     </section>
   </main>
 
@@ -145,6 +87,7 @@
     © 2025 Smart IT – Serwis komputerowy z pasją
   </footer>
 
+  <!-- JS -->
+  <script src="script.js"></script>
 </body>
 </html>
-```
