@@ -5,35 +5,28 @@
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
   <title>Smart IT – Serwis Komputerowy</title>
   
-  <!-- SEO Meta -->
-  <meta name="description" content="Smart IT – profesjonalny serwis komputerowy w Ząbkach i okolicach. Naprawa, modernizacja, instalacje."/>
-  
-  <!-- Preconnect for Boxicons -->
-  <link rel="preconnect" href="https://unpkg.com" crossorigin/>
-  <!-- Boxicons CDN -->
-  <link href="https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css" rel="stylesheet"/>
+  <!-- Font Awesome Free CDN -->
+  <link
+    rel="stylesheet"
+    href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"
+    integrity="sha512-pVIeFDntNYclTWtE2mOq3kha2la5kH+gJgojv5JxOTpYJsW3OZJkZeNfIiKd5qXPyXUoxsd+5lFp36/ZbwPw9g=="
+    crossorigin="anonymous"
+    referrerpolicy="no-referrer"
+  />
 
-  <!-- Styles -->
+  <!-- Your external CSS or inline styles -->
   <style>
-    * {
-      box-sizing: border-box;
-      margin: 0;
-      padding: 0;
-    }
+    * { box-sizing: border-box; margin:0; padding:0 }
     body {
       font-family: Arial, sans-serif;
       background: #f5f5f5;
       color: #333;
-      line-height: 1.5;
     }
     header, footer {
       background: #4A90E2;
       color: #fff;
       text-align: center;
       padding: 1rem;
-    }
-    header h1 {
-      margin-bottom: .25rem;
     }
     .services {
       display: grid;
@@ -50,7 +43,7 @@
     }
     .icon {
       font-size: 3rem;
-      margin-bottom: .5rem;
+      margin-bottom: 0.5rem;
       color: #4A90E2;
     }
     .card.cooling .icon  { color: #50E3C2; }
@@ -58,7 +51,6 @@
     .card.software .icon { color: #9013FE; }
     .card.backup .icon   { color: #417505; }
     .card.onsite .icon   { color: #D0021B; }
-
     .contact {
       background: #fff;
       margin: 1rem;
@@ -66,36 +58,33 @@
       border-radius: 8px;
       box-shadow: 0 2px 6px rgba(0,0,0,0.1);
     }
-    .contact h2 {
-      margin-bottom: .75rem;
-    }
     .contact form {
       display: flex;
       flex-direction: column;
-      gap: .75rem;
+      gap: 0.75rem;
     }
     .contact input,
     .contact textarea {
-      padding: .5rem;
-      font-size: 1rem;
+      padding: 0.5rem;
       border: 1px solid #ccc;
       border-radius: 4px;
       width: 100%;
+      font-size: 1rem;
     }
     .contact button {
-      padding: .5rem;
-      font-size: 1rem;
+      padding: 0.5rem;
       border: none;
       border-radius: 4px;
       background: #4A90E2;
       color: #fff;
+      font-size: 1rem;
       cursor: pointer;
     }
     .contact button:hover {
       background: #3a78bf;
     }
     .contact p {
-      margin-top: .75rem;
+      margin-top: 0.75rem;
     }
     .contact a {
       color: #4A90E2;
@@ -112,41 +101,43 @@
 
   <main>
     <section class="services" aria-label="Nasze usługi">
+
       <article class="card repair">
-        <div class="icon"><i class="bx bx-wrench"></i></div>
+        <div class="icon"><i class="fa-solid fa-wrench"></i></div>
         <h2>🔧 Naprawa sprzętu</h2>
         <p>Diagnoza i usuwanie usterek w komputerach i laptopach.</p>
       </article>
 
       <article class="card cooling">
-        <div class="icon"><i class="bx bx-cpu"></i></div>
+        <div class="icon"><i class="fa-solid fa-microchip"></i></div>
         <h2>💨 Konserwacja i chłodzenie</h2>
         <p>Czyszczenie układów chłodzenia, wymiana pasty i wentylatorów.</p>
       </article>
 
       <article class="card upgrade">
-        <div class="icon"><i class="bx bx-rocket"></i></div>
+        <div class="icon"><i class="fa-solid fa-rocket"></i></div>
         <h2>🚀 Modernizacja</h2>
         <p>Montaż SSD, RAM, GPU – odświeżenie i przyspieszenie sprzętu.</p>
       </article>
 
       <article class="card software">
-        <div class="icon"><i class="bx bx-download"></i></div>
+        <div class="icon"><i class="fa-solid fa-download"></i></div>
         <h2>💿 Instalacja oprogramowania</h2>
         <p>Systemy operacyjne, sterowniki, programy biurowe i antywirusowe.</p>
       </article>
 
       <article class="card backup">
-        <div class="icon"><i class="bx bx-data"></i></div>
+        <div class="icon"><i class="fa-solid fa-database"></i></div>
         <h2>🗄️ Backup & Recovery</h2>
         <p>Kopie zapasowe i odzyskiwanie utraconych danych.</p>
       </article>
 
       <article class="card onsite">
-        <div class="icon"><i class="bx bx-car"></i></div>
+        <div class="icon"><i class="fa-solid fa-truck"></i></div>
         <h2>🏡 Dojazd do klienta</h2>
         <p>Serwis w domu lub biurze – Ząbki i okolice.</p>
       </article>
+
     </section>
 
     <section class="contact" aria-label="Kontakt">
@@ -164,6 +155,5 @@
     © 2025 Smart IT – Serwis komputerowy z pasją
   </footer>
 
-  <script src="script.js"></script>
 </body>
 </html>
