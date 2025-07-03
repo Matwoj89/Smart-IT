@@ -5,61 +5,16 @@
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>Smart IT – Serwis Komputerowy</title>
 
-  <!-- SEO Meta -->
-  <meta name="description"
-        content="Smart IT – profesjonalny serwis komputerowy w Ząbkach i okolicach. Naprawa, modernizacja, instalacje." />
-
-  <!-- Open Graph -->
-  <meta property="og:title" content="Smart IT – Serwis Komputerowy" />
-  <meta property="og:description" content="Profesjonalny serwis komputerowy w Ząbkach. Naprawa, modernizacja, chłodzenie" />
-  <meta property="og:image" content="https://TwojLogin.github.io/og-image.png" />
-  <meta property="og:url"   content="https://TwojLogin.github.io" />
-
-  <!-- Favicon -->
-  <link rel="icon" href="favicon.ico" />
-
-  <!-- Preconnects -->
+  <!-- Preconnect dla szybszego ładowania ikon -->
   <link rel="preconnect" href="https://img.icons8.com" crossorigin />
 
-  <!-- CSS -->
   <link rel="stylesheet" href="styles.css" />
-
-  <!-- Analytics -->
-  <script async src="https://www.googletagmanager.com/gtag/js?id=G-XXXXXXXXXX"></script>
-  <script>
-    window.dataLayer = window.dataLayer || [];
-    function gtag(){dataLayer.push(arguments);}
-    gtag('js', new Date());
-    gtag('config', 'G-XXXXXXXXXX');
-  </script>
-
-  <style>
-    /* przykład gridu – przenieś do styles.css */
-    .services {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-      gap: 1rem;
-      padding: 1rem;
-    }
-    .card {
-      background: #fff;
-      border-radius: 8px;
-      box-shadow: 0 2px 6px rgba(0,0,0,0.1);
-      text-align: center;
-      padding: 1rem;
-    }
-    .card img {
-      display: block;
-      margin: 0 auto 0.75rem;
-    }
-  </style>
 </head>
-<body class="light">
+<body>
 
   <header>
     <h1>Smart IT</h1>
     <p>Profesjonalny serwis komputerowy – Ząbki i okolice</p>
-    <button id="theme-toggle" role="button">🌙 Tryb ciemny/jasny</button>
   </header>
 
   <main>
@@ -68,7 +23,7 @@
         <h2>🔧 Naprawa sprzętu</h2>
         <p>Diagnoza i usuwanie usterek w komputerach i laptopach.</p>
         <img
-          src="https://img.icons8.com/ios-filled/300/tools.png"
+          src="https://img.icons8.com/ios-filled/300/000000/tools.png"
           alt="Ikona narzędzi – naprawa sprzętu"
           width="300" height="300"
           loading="lazy"
@@ -79,7 +34,7 @@
         <h2>💨 Konserwacja i chłodzenie</h2>
         <p>Czyszczenie układów chłodzenia, wymiana pasty i wentylatorów.</p>
         <img
-          src="https://img.icons8.com/ios-filled/300/cpu.png"
+          src="https://img.icons8.com/ios-filled/300/000000/cpu.png"
           alt="Ikona procesora – chłodzenie"
           width="300" height="300"
           loading="lazy"
@@ -90,7 +45,7 @@
         <h2>🚀 Modernizacja</h2>
         <p>Montaż SSD, RAM, GPU – odświeżenie i przyspieszenie sprzętu.</p>
         <img
-          src="https://img.icons8.com/ios-filled/300/upgrade.png"
+          src="https://img.icons8.com/ios-filled/300/000000/upgrade.png"
           alt="Ikona strzałki – modernizacja"
           width="300" height="300"
           loading="lazy"
@@ -101,7 +56,7 @@
         <h2>💿 Instalacja oprogramowania</h2>
         <p>Systemy operacyjne, sterowniki, programy biurowe i antywirusowe.</p>
         <img
-          src="https://img.icons8.com/ios-filled/300/installing-updates.png"
+          src="https://img.icons8.com/ios-filled/300/000000/installing-updates.png"
           alt="Ikona instalacji – oprogramowanie"
           width="300" height="300"
           loading="lazy"
@@ -112,7 +67,7 @@
         <h2>🗄️ Backup & Recovery</h2>
         <p>Kopie zapasowe i odzyskiwanie utraconych danych.</p>
         <img
-          src="https://img.icons8.com/ios-filled/300/backup.png"
+          src="https://img.icons8.com/ios-filled/300/000000/backup.png"
           alt="Ikona dysku – backup i recovery"
           width="300" height="300"
           loading="lazy"
@@ -123,30 +78,17 @@
         <h2>🏡 Dojazd do klienta</h2>
         <p>Serwis w domu lub biurze – Ząbki i okolice.</p>
         <img
-          src="https://img.icons8.com/ios-filled/300/delivery.png"
+          src="https://img.icons8.com/ios-filled/300/000000/delivery-truck.png"
           alt="Ikona samochodu – dojazd do klienta"
           width="300" height="300"
           loading="lazy"
         />
       </article>
     </section>
-
-    <section class="contact" aria-label="Kontakt">
-      <h2>Kontakt</h2>
-      <form action="https://formspree.io/f/YOUR_ID" method="POST">
-        <input type="email" name="email" placeholder="Twój e-mail" required />
-        <textarea name="message" rows="4" placeholder="Treść wiadomości"></textarea>
-        <button type="submit">Wyślij</button>
-      </form>
-      <p>lub dzwoń: <a href="tel:+48600123456">+48 600 123 456</a></p>
-    </section>
   </main>
 
   <footer>
     © 2025 Smart IT – Serwis komputerowy z pasją
   </footer>
-
-  <!-- JS -->
-  <script src="script.js"></script>
 </body>
 </html>
