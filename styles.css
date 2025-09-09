@@ -18,7 +18,7 @@ body {
 }
 
 /* Matrix Canvas Background */
-#matrix-canvas {
+#matrix-bg {
   position: fixed;
   top: 0; left: 0;
   width: 100vw;
@@ -284,4 +284,5 @@ footer .neon {
     font-size: 12px;
   }
 }
+
 
