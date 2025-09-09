@@ -55,10 +55,10 @@
       <h2>Kontakt</h2>
       <p>E-mail: <a href="mailto:mateuszwojciechowski89@gmail.com">mateuszwojciechowski89@gmail.com</a></p>
       <p>Telefon: <a href="tel:+48508866000">+48 508 866 000</a></p>
-      <form>
-        <input type="text" placeholder="Twoje imię" required>
-        <input type="email" placeholder="Twój e-mail" required>
-        <textarea placeholder="Wiadomość" required></textarea>
+      <form action="https://formspree.io/f/xpwjbrry" method="POST">
+        <input type="text" name="name" placeholder="Twoje imię" required>
+        <input type="email" name="email" placeholder="Twój e-mail" required>
+        <textarea name="message" placeholder="Wiadomość" required></textarea>
         <button type="submit" class="glow-btn">Wyślij</button>
       </form>
     </section>
