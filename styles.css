@@ -7,21 +7,35 @@
   --accent: #1b3a2b;
   --box-shadow: 0 0 20px #39ff1460;
 }
-
 body {
   background: var(--bg-dark);
   color: #e0ffe6;
   font-family: var(--font-main);
   margin: 0;
   min-height: 100vh;
+  position: relative;
+  overflow-x: hidden;
+}
+
+/* Matrix Canvas Background */
+#matrix-canvas {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  z-index: -1;
+  opacity: 0.3;
+  background: linear-gradient(45deg, #000611 0%, #0a1a0a 100%);
 }
 
 .header {
   padding: 2rem 0 1rem 0;
   background: linear-gradient(90deg, #0e2620 60%, #193726 100%);
   text-align: center;
+  position: relative;
+  z-index: 1;
 }
-
 .header h1 {
   font-family: var(--font-tech);
   color: var(--green-neon);
@@ -33,11 +47,37 @@ body {
   justify-content: center;
   gap: 0.5rem;
 }
-
 .header .neon {
   color: var(--green-neon);
   animation: blink 1.5s infinite alternate;
   font-size: 1.5em;
+}
+
+/* Matrix Rain Animation */
+@keyframes matrix-rain {
+  0% {
+    transform: translateY(-100%);
+    opacity: 0;
+  }
+  10% {
+    opacity: 1;
+  }
+  90% {
+    opacity: 1;
+  }
+  100% {
+    transform: translateY(100vh);
+    opacity: 0;
+  }
+}
+
+.matrix-char {
+  position: absolute;
+  color: #39ff14;
+  font-family: 'Courier New', monospace;
+  font-size: 14px;
+  animation: matrix-rain linear infinite;
+  text-shadow: 0 0 5px #39ff14;
 }
 
 @keyframes blink {
@@ -45,7 +85,6 @@ body {
   60%  { opacity: 0.7; }
   100% { opacity: 0.2;}
 }
-
 .subtitle {
   color: #bafad7;
   font-size: 1.12rem;
@@ -53,7 +92,6 @@ body {
   font-family: var(--font-tech);
   letter-spacing: 0.15em;
 }
-
 .hero {
   background: rgba(25, 52, 35, 0.7);
   text-align: center;
@@ -63,19 +101,20 @@ body {
   width: 96%;
   max-width: 680px;
   box-shadow: var(--box-shadow);
+  position: relative;
+  z-index: 1;
+  backdrop-filter: blur(5px);
+  border: 1px solid rgba(57, 255, 20, 0.3);
 }
-
 .hero h2 {
   color: var(--green-neon);
   font-size: 2rem;
   font-family: var(--font-tech);
   margin: 0 0 0.7em 0;
 }
-
 .hero .neon {
   font-weight: bold;
 }
-
 .services {
   display: flex;
   flex-wrap: wrap;
@@ -83,8 +122,9 @@ body {
   margin: 1.2rem auto 2rem auto;
   gap: 1.1rem;
   justify-content: center;
+  position: relative;
+  z-index: 1;
 }
-
 .service {
   background: linear-gradient(140deg, #183428, #151d18 80%);
   border: 2px solid var(--green-darker);
@@ -95,14 +135,13 @@ body {
   text-align: center;
   padding: 1.2rem 0.9rem;
   box-shadow: var(--box-shadow);
-  transition: transform 0.25s;
+  transition: transform 0.25s, box-shadow 0.25s;
+  backdrop-filter: blur(3px);
 }
-
 .service:hover {
   transform: translateY(-7px) scale(1.03);
   box-shadow: 0 0 40px var(--green-neon), 0 0 15px #00de5a33;
 }
-
 .icon {
   font-size: 2.3rem;
   margin-bottom: 0.5rem;
@@ -110,22 +149,23 @@ body {
   color: var(--green-neon);
   filter: drop-shadow(0 0 5px #36ff1444);
 }
-
 .contact {
   text-align: center;
   max-width: 480px;
   margin: 2.5rem auto 1rem auto;
-  background: #172c24ee;
+  background: rgba(23, 44, 36, 0.9);
   padding: 1.8rem 1rem;
   border-radius: 20px;
   box-shadow: var(--box-shadow);
+  position: relative;
+  z-index: 1;
+  backdrop-filter: blur(5px);
+  border: 1px solid rgba(57, 255, 20, 0.2);
 }
-
 .contact h2 {
   font-family: var(--font-tech);
   color: var(--green-neon);
 }
-
 .contact a {
   color: var(--green-neon);
   text-decoration: none;
@@ -133,25 +173,23 @@ body {
   transition: color 0.18s;
 }
 .contact a:hover { color: #5aff45; }
-
 .contact form {
   display: flex;
   flex-direction: column;
   gap: 0.7rem;
   margin-top: 1.5rem;
 }
-
 .contact input, .contact textarea {
   padding: 0.7em;
   border: 1px solid #2eff8a;
-  background: #141d18cc;
+  background: rgba(20, 29, 24, 0.8);
   color: #e2ffe0;
   border-radius: 8px;
   font-size: 1em;
   outline: none;
   font-family: var(--font-main);
+  backdrop-filter: blur(2px);
 }
-
 .glow-btn {
   background: var(--green-neon);
   color: #073517;
@@ -163,30 +201,87 @@ body {
   padding: 0.8em 0;
   box-shadow: 0 0 14px 2px var(--green-neon);
   cursor: pointer;
-  transition: background 0.2s, color 0.2s;
+  transition: background 0.2s, color 0.2s, box-shadow 0.2s;
 }
 .glow-btn:hover {
   background: #58ff7a;
   color: #024717;
+  box-shadow: 0 0 20px 3px var(--green-neon);
 }
-
 footer {
   margin-top: 2.4rem;
   text-align: center;
   color: #45764f;
   font-size: 1em;
-  background: #141e19;
+  background: rgba(20, 30, 25, 0.9);
   padding: 0.7em 0;
   border-top: 1px solid #084d27;
+  position: relative;
+  z-index: 1;
+  backdrop-filter: blur(3px);
 }
-
 footer .neon {
   color: var(--green-neon);
   text-shadow: 0 0 4px #39ff1450, 0 0 7px #003f1a;
+}
+
+/* Matrix Digital Rain Effect */
+.matrix-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+  z-index: 0;
+  overflow: hidden;
+}
+
+.matrix-column {
+  position: absolute;
+  top: -100%;
+  font-family: 'Courier New', monospace;
+  font-size: 12px;
+  color: #39ff14;
+  text-shadow: 0 0 3px #39ff14;
+  animation: matrix-fall linear infinite;
+}
+
+@keyframes matrix-fall {
+  from {
+    transform: translateY(-100vh);
+    opacity: 0;
+  }
+  10% {
+    opacity: 1;
+  }
+  90% {
+    opacity: 1;
+  }
+  to {
+    transform: translateY(100vh);
+    opacity: 0;
+  }
+}
+
+/* Enhanced Glow Effects */
+.service:hover,
+.hero:hover,
+.contact:hover {
+  border-color: var(--green-neon);
+  box-shadow: 0 0 30px rgba(57, 255, 20, 0.4);
 }
 
 /* Responsywność */
 @media (max-width: 700px) {
   .services { flex-direction: column; align-items: center; }
   .service { max-width: 95%; width: 95%; }
+  
+  #matrix-canvas {
+    opacity: 0.2;
+  }
+  
+  .matrix-char {
+    font-size: 12px;
+  }
 }
