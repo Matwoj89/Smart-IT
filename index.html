@@ -62,10 +62,10 @@
     <p>&copy; 2025 Smart IT • Made in <span class="neon">Matrix</span></p>
   </footer>
   <script>
-const canvas = document.getElementById('matrix-canvas');
+<script>
+const canvas = document.getElementById('matrix-bg');
 const ctx = canvas.getContext('2d');
 
-// Ustaw rozmiar na pełny ekran
 function resizeCanvas() {
   canvas.width = window.innerWidth;
   canvas.height = window.innerHeight;
@@ -73,33 +73,23 @@ function resizeCanvas() {
 resizeCanvas();
 window.addEventListener('resize', resizeCanvas);
 
-// Znaki (możesz dodać własne)
-const katakana = 'アァイィウヴエェオカガキギクグケゲコゴサザシジスズセゼソゾタダチヂッツヅテデトドナニヌネノハバパヒビピフブプヘベペホボポマミムメモヤャユュヨョラリルレロワヲン';
-const chars = katakana + 'ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789';
-const fontSize = 18;
-const columns = () => Math.floor(window.innerWidth / fontSize);
-let drops = Array(columns()).fill(1);
-
+const letters = Array(256).join("01").split("");
 function drawMatrix() {
-  ctx.fillStyle = 'rgba(16,25,22, 0.21)';
+  ctx.fillStyle = "rgba(0,0,0,0.08)";
   ctx.fillRect(0, 0, canvas.width, canvas.height);
-
-  ctx.font = fontSize + 'px monospace';
-  ctx.fillStyle = '#39ff14'; // Zielony Matrix
-  for(let i = 0; i < drops.length; i++) {
-    const text = chars.charAt(Math.floor(Math.random() * chars.length));
-    ctx.fillText(text, i * fontSize, drops[i] * fontSize);
-
-    if(drops[i] * fontSize > canvas.height && Math.random() > 0.975) {
-      drops[i] = 0;
-    }
-    drops[i]++;
-  }
+  ctx.fillStyle = "#0F0";
+  letters.forEach(function (y_pos, index) {
+    const text = String.fromCharCode(3e4 + Math.random() * 33);
+    const x_pos = index * 10;
+    ctx.fillText(text, x_pos, y_pos);
+    letters[index] = y_pos > canvas.height + Math.random() * 1e4 ? 0 : (parseFloat(y_pos) || 0) + 10;
+  });
 }
-setInterval(drawMatrix, 42);
+setInterval(drawMatrix, 33);
 </script>
 
 </body>
 </html>
+
 
 
