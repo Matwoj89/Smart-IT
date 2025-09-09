@@ -9,6 +9,7 @@
   <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@700&family=Roboto&display=swap" rel="stylesheet">
 </head>
 <body>
+  <canvas id="matrix-canvas"></canvas>
   <header class="header">
     <h1>Smart IT <span class="neon">●</span></h1>
     <p class="subtitle">Matrixowy Serwis Komputerowy – Ząbki</p>
@@ -60,5 +61,44 @@
   <footer>
     <p>&copy; 2025 Smart IT • Made in <span class="neon">Matrix</span></p>
   </footer>
+  <script>
+const canvas = document.getElementById('matrix-canvas');
+const ctx = canvas.getContext('2d');
+
+// Ustaw rozmiar na pełny ekran
+function resizeCanvas() {
+  canvas.width = window.innerWidth;
+  canvas.height = window.innerHeight;
+}
+resizeCanvas();
+window.addEventListener('resize', resizeCanvas);
+
+// Znaki (możesz dodać własne)
+const katakana = 'アァイィウヴエェオカガキギクグケゲコゴサザシジスズセゼソゾタダチヂッツヅテデトドナニヌネノハバパヒビピフブプヘベペホボポマミムメモヤャユュヨョラリルレロワヲン';
+const chars = katakana + 'ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789';
+const fontSize = 18;
+const columns = () => Math.floor(window.innerWidth / fontSize);
+let drops = Array(columns()).fill(1);
+
+function drawMatrix() {
+  ctx.fillStyle = 'rgba(16,25,22, 0.21)';
+  ctx.fillRect(0, 0, canvas.width, canvas.height);
+
+  ctx.font = fontSize + 'px monospace';
+  ctx.fillStyle = '#39ff14'; // Zielony Matrix
+  for(let i = 0; i < drops.length; i++) {
+    const text = chars.charAt(Math.floor(Math.random() * chars.length));
+    ctx.fillText(text, i * fontSize, drops[i] * fontSize);
+
+    if(drops[i] * fontSize > canvas.height && Math.random() > 0.975) {
+      drops[i] = 0;
+    }
+    drops[i]++;
+  }
+}
+setInterval(drawMatrix, 42);
+</script>
+
 </body>
 </html>
+
