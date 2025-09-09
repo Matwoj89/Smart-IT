@@ -20,14 +20,13 @@ body {
 /* Matrix Canvas Background */
 #matrix-canvas {
   position: fixed;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
+  top: 0; left: 0;
+  width: 100vw;
+  height: 100vh;
   z-index: -1;
-  opacity: 0.3;
-  background: linear-gradient(45deg, #000611 0%, #0a1a0a 100%);
+  pointer-events: none;
 }
+
 
 .header {
   padding: 2rem 0 1rem 0;
@@ -285,3 +284,4 @@ footer .neon {
     font-size: 12px;
   }
 }
+
