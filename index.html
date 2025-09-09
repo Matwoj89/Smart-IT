@@ -1,159 +1,64 @@
 <!DOCTYPE html>
 <html lang="pl">
 <head>
-  <meta charset="UTF-8"/>
-  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Smart IT – Serwis Komputerowy</title>
-  
-  <!-- Font Awesome Free CDN -->
-  <link
-    rel="stylesheet"
-    href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"
-    integrity="sha512-pVIeFDntNYclTWtE2mOq3kha2la5kH+gJgojv5JxOTpYJsW3OZJkZeNfIiKd5qXPyXUoxsd+5lFp36/ZbwPw9g=="
-    crossorigin="anonymous"
-    referrerpolicy="no-referrer"
-  />
-
-  <!-- Your external CSS or inline styles -->
-  <style>
-    * { box-sizing: border-box; margin:0; padding:0 }
-     body {
-      font-family: Arial, sans-serif;
-      background: #f5f5f5;
-      color: #333;
-    }
-    header, footer {
-      background: #4A90E2;
-      color: #fff;
-      text-align: center;
-      padding: 1rem;
-    }
-    .services {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(240px,1fr));
-      gap: 1rem;
-      padding: 1rem;
-    }
-    .card {
-      background: #fff;
-      border-radius: 8px;
-      box-shadow: 0 2px 6px rgba(0,0,0,0.1);
-      text-align: center;
-      padding: 1rem;
-    }
-    .icon {
-      font-size: 3rem;
-      margin-bottom: 0.5rem;
-      color: #4A90E2;
-    }
-    .card.cooling .icon  { color: #50E3C2; }
-    .card.upgrade .icon  { color: #F5A623; }
-    .card.software .icon { color: #9013FE; }
-    .card.backup .icon   { color: #417505; }
-    .card.onsite .icon   { color: #D0021B; }
-    .contact {
-      background: #fff;
-      margin: 1rem;
-      padding: 1rem;
-      border-radius: 8px;
-      box-shadow: 0 2px 6px rgba(0,0,0,0.1);
-    }
-    .contact form {
-      display: flex;
-      flex-direction: column;
-      gap: 0.75rem;
-    }
-    .contact input,
-    .contact textarea {
-      padding: 0.5rem;
-      border: 1px solid #ccc;
-      border-radius: 4px;
-      width: 100%;
-      font-size: 1rem;
-    }
-    .contact button {
-      padding: 0.5rem;
-      border: none;
-      border-radius: 4px;
-      background: #4A90E2;
-      color: #fff;
-      font-size: 1rem;
-      cursor: pointer;
-    }
-    .contact button:hover {
-      background: #3a78bf;
-    }
-    .contact p {
-      margin-top: 0.75rem;
-    }
-    .contact a {
-      color: #4A90E2;
-      text-decoration: none;
-    }
-  </style>
+  <link rel="stylesheet" href="styles.css">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@700&family=Roboto&display=swap" rel="stylesheet">
 </head>
 <body>
-
-  <header>
-    <h1>Smart IT</h1>
-    <p>Profesjonalny serwis komputerowy – Ząbki i okolice</p>
+  <header class="header">
+    <h1>Smart IT <span class="neon">●</span></h1>
+    <p class="subtitle">Matrixowy Serwis Komputerowy – Ząbki</p>
   </header>
-
   <main>
-    <section class="services" aria-label="Nasze usługi">
-
-      <article class="card repair">
-        <div class="icon"><i class="fa-solid fa-wrench"></i></div>
-        <h2>🔧 Naprawa sprzętu</h2>
-        <p>Diagnoza i usuwanie usterek w komputerach i laptopach.</p>
-      </article>
-
-      <article class="card cooling">
-        <div class="icon"><i class="fa-solid fa-microchip"></i></div>
-        <h2>💨 Konserwacja i chłodzenie</h2>
-        <p>Czyszczenie układów chłodzenia, wymiana pasty i wentylatorów.</p>
-      </article>
-
-      <article class="card upgrade">
-        <div class="icon"><i class="fa-solid fa-rocket"></i></div>
-        <h2>🚀 Modernizacja</h2>
-        <p>Montaż SSD, RAM, GPU – odświeżenie i przyspieszenie sprzętu.</p>
-      </article>
-
-      <article class="card software">
-        <div class="icon"><i class="fa-solid fa-download"></i></div>
-        <h2>💿 Instalacja oprogramowania</h2>
-        <p>Systemy operacyjne, sterowniki, programy biurowe i antywirusowe.</p>
-      </article>
-
-      <article class="card backup">
-        <div class="icon"><i class="fa-solid fa-database"></i></div>
-        <h2>🗄️ Backup & Recovery</h2>
-        <p>Kopie zapasowe i odzyskiwanie utraconych danych.</p>
-      </article>
-
-      <article class="card onsite">
-        <div class="icon"><i class="fa-solid fa-truck"></i></div>
-        <h2>🏡 Dojazd do klienta</h2>
-        <p>Serwis w domu lub biurze – Ząbki i okolice.</p>
-      </article>
-
+    <section class="hero">
+      <h2>Komputery. Laptopy. Serwis na poziomie przyszłości.</h2>
+      <p>Specjalistyczna diagnoza, naprawa i modernizacja Twojego sprzętu.<br><span class="neon">Realizacja na terenie Ząbek i okolic.</span></p>
     </section>
-
-    <section class="contact" aria-label="Kontakt">
+    <section class="services">
+      <div class="service">
+        <span class="icon">🖥️</span>
+        <h3>Naprawa sprzętu</h3>
+        <p>Diagnoza i usuwanie usterek komputerów/laptopów.</p>
+      </div>
+      <div class="service">
+        <span class="icon">🌬️</span>
+        <h3>Konserwacja / Chłodzenie</h3>
+        <p>Czyszczenie, wymiana pasty, naprawa wentylacji.</p>
+      </div>
+      <div class="service">
+        <span class="icon">🚀</span>
+        <h3>Modernizacja</h3>
+        <p>Montaż SSD, RAM, GPU – przyspieszenie sprzętu.</p>
+      </div>
+      <div class="service">
+        <span class="icon">💾</span>
+        <h3>Backup & Recovery</h3>
+        <p>Kopie zapasowe i odzyskiwanie danych.</p>
+      </div>
+      <div class="service">
+        <span class="icon">🏡</span>
+        <h3>Dojazd do klienta</h3>
+        <p>Naprawy na miejscu – dom/biuro.</p>
+      </div>
+    </section>
+    <section class="contact">
       <h2>Kontakt</h2>
-      <form action="https://formspree.io/f/YOUR_ID" method="POST">
-        <input type="email" name="email" placeholder="Twój e-mail" required/>
-        <textarea name="message" rows="4" placeholder="Treść wiadomości"></textarea>
-        <button type="submit">Wyślij</button>
+      <p>E-mail: <a href="mailto:kontakt@smartit.pl">kontakt@smartit.pl</a></p>
+      <p>Telefon: <a href="tel:+48600123456">+48 600 123 456</a></p>
+      <form>
+        <input type="text" placeholder="Twoje imię" required>
+        <input type="email" placeholder="Twój e-mail" required>
+        <textarea placeholder="Wiadomość" required></textarea>
+        <button type="submit" class="glow-btn">Wyślij</button>
       </form>
-      <p>lub dzwoń: <a href="tel:+48600123456">+48 600 123 456</a></p>
     </section>
   </main>
-
   <footer>
-    © 2025 Smart IT – Serwis komputerowy z pasją
+    <p>&copy; 2025 Smart IT • Made in <span class="neon">Matrix</span></p>
   </footer>
-<script src="//code.tidio.co/hfmwrcnjxmhgew42o27vs6fsilhqu5gv.js" async></script>
 </body>
 </html>
