@@ -272,18 +272,50 @@ footer .neon {
 }
 
 /* Responsywność */
-@media (max-width: 700px) {
-  .services { flex-direction: column; align-items: center; }
-  .service { max-width: 95%; width: 95%; }
-  
-  #matrix-canvas {
-    opacity: 0.2;
+@media (max-width: 600px) {
+  body, html {
+    font-size: 15px;
+    padding: 0;
+    margin: 0;
   }
-  
-  .matrix-char {
-    font-size: 12px;
+  .container, .content, .section, main, header, footer {
+    max-width: 100vw;
+    padding: 12px 4vw;
+    margin: 0;
+    box-sizing: border-box;
+  }
+  h1, h2, h3 {
+    font-size: 1.2em;
+    line-height: 1.25;
+    word-break: break-word;
+  }
+  ul, ol {
+    margin-left: 1em;
+    padding-left: 1em;
+  }
+  form, .form-section, #contact, .contact {
+    max-width: 100vw;
+    padding: 8px 0;
+  }
+  input, textarea, button {
+    width: 100%;
+    min-width: 0;
+    font-size: 1em;
+    box-sizing: border-box;
+  }
+  .service {
+    flex-direction: column;
+    gap: 10px;
+    align-items: flex-start;
   }
 }
+
+#matrix-bg {
+  max-width: 100vw !important;
+  max-height: 100vh !important;
+  pointer-events: none;
+}
+
 
 
 
