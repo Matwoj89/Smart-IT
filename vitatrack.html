@@ -246,13 +246,13 @@ function HealthTracker() {
   const wrapRef   = useRef(null);
 
   useEffect(() => {
+      
     try {
       const saved = localStorage.getItem(STORAGE_KEY);
-        if (saved) setEntries(JSON.parse(saved));
-      } catch {}
-      setLoaded(true);
-    })();
-  }, []);
+      if (saved) setEntries(JSON.parse(saved));
+    } catch {}
+    setLoaded(true);
+
 
   useEffect(() => {
     if (loaded) {
