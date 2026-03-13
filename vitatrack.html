@@ -7,269 +7,244 @@
   <script crossorigin src="https://unpkg.com/react@18/umd/react.production.min.js"></script>
   <script crossorigin src="https://unpkg.com/react-dom@18/umd/react-dom.production.min.js"></script>
   <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
-  <style>
-    * { margin: 0; padding: 0; box-sizing: border-box; }
-    body {
-      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-      min-height: 100vh;
-      padding: 20px;
-    }
-    .container {
-      max-width: 800px;
-      margin: 0 auto;
-      background: white;
-      border-radius: 20px;
-      padding: 30px;
-      box-shadow: 0 20px 60px rgba(0,0,0,0.3);
-    }
-    h1 {
-      color: #667eea;
-      text-align: center;
-      margin-bottom: 10px;
-      font-size: 2.5em;
-    }
-    .subtitle {
-      text-align: center;
-      color: #666;
-      margin-bottom: 30px;
-      font-size: 1.1em;
-    }
-    .stats {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-      gap: 20px;
-      margin-bottom: 30px;
-    }
-    .stat-card {
-      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-      color: white;
-      padding: 20px;
-      border-radius: 15px;
-      text-align: center;
-    }
-    .stat-card h3 {
-      font-size: 0.9em;
-      opacity: 0.9;
-      margin-bottom: 10px;
-    }
-    .stat-card .value {
-      font-size: 2em;
-      font-weight: bold;
-    }
-    .form-section {
-      background: #f8f9fa;
-      padding: 25px;
-      border-radius: 15px;
-      margin-bottom: 20px;
-    }
-    .form-section h2 {
-      color: #667eea;
-      margin-bottom: 20px;
-      font-size: 1.5em;
-    }
-    .form-group {
-      margin-bottom: 15px;
-    }
-    .form-group label {
-      display: block;
-      margin-bottom: 5px;
-      color: #333;
-      font-weight: 500;
-    }
-    .form-group input, .form-group select, .form-group textarea {
-      width: 100%;
-      padding: 12px;
-      border: 2px solid #ddd;
-      border-radius: 8px;
-      font-size: 1em;
-      transition: border-color 0.3s;
-    }
-    .form-group input:focus, .form-group select:focus, .form-group textarea:focus {
-      outline: none;
-      border-color: #667eea;
-    }
-    button {
-      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-      color: white;
-      border: none;
-      padding: 12px 30px;
-      border-radius: 8px;
-      font-size: 1em;
-      cursor: pointer;
-      transition: transform 0.2s;
-      font-weight: bold;
-    }
-    button:hover {
-      transform: translateY(-2px);
-    }
-    .entry-list {
-      margin-top: 20px;
-    }
-    .entry {
-      background: white;
-      padding: 15px;
-      border-radius: 10px;
-      margin-bottom: 10px;
-      border-left: 4px solid #667eea;
-    }
-    .entry-header {
-      display: flex;
-      justify-content: space-between;
-      margin-bottom: 10px;
-    }
-    .entry-date {
-      font-weight: bold;
-      color: #667eea;
-    }
-    .delete-btn {
-      background: #dc3545;
-      padding: 5px 15px;
-      font-size: 0.9em;
-    }
-  </style>
+  //fonts.googleapis.com/css2?family=DM+Sans:wght@300;400;500&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
 </head>
 <body>
   <div id="root"></div>
 
   <script type="text/babel">
-    const { useState, useEffect } = React;
+const { useState, useEffect, useRef, useCallback } = React;
 
-    function VitaTrack() {
-      const [entries, setEntries] = useState([]);
-      const [weight, setWeight] = useState('');
-      const [exercise, setExercise] = useState('');
-      const [mood, setMood] = useState('dobry');
-      const [notes, setNotes] = useState('');
+const CHECKPOINTS = [108, 102, 98, 96, 94, 92, 90, 88, 86];
+const STORAGE_KEY = "health-tracker-weights";
+const DAY_MS = 86400000;
+const INITIAL_DATA = [
+  { date: "2026-03-12", weight: 110.0 },
+  { date: "2026-03-13", weight: 109.5 },
+  { date: "2026-03-14", weight: 108.0 },
+];
 
-      useEffect(() => {
-        const saved = localStorage.getItem('vitatrack-data');
-        if (saved) {
-          setEntries(JSON.parse(saved));
-        }
-      }, []);
+const MONTHS_SHORT = ["sty","lut","mar","kwi","maj","cze","lip","sie","wrz","paź","lis","gru"];
+const MONTHS_FULL  = ["Styczeń","Luty","Marzec","Kwiecień","Maj","Czerwiec","Lipiec","Sierpień","Wrzesień","Październik","Listopad","Grudzień"];
+const DAYS_SHORT   = ["Pn","Wt","Śr","Cz","Pt","So","Nd"];
 
-      useEffect(() => {
-        localStorage.setItem('vitatrack-data', JSON.stringify(entries));
-      }, [entries]);
+function dateToMs(s)   { return new Date(s + "T00:00:00").getTime(); }
+function msToDateStr(ms) {
+  const d = new Date(ms);
+  return `${d.getFullYear()}-${String(d.getMonth()+1).padStart(2,"0")}-${String(d.getDate()).padStart(2,"0")}`;
+}
+function msToLabel(ms) {
+  const d = new Date(ms);
+  return `${d.getDate()} ${MONTHS_SHORT[d.getMonth()]}`;
+}
+function formatDate(s) {
+  const d = new Date(s + "T00:00:00");
+  return `${d.getDate()} ${MONTHS_SHORT[d.getMonth()]}`;
+}
+function nextCheckpoint(w) { return CHECKPOINTS.find(c => c < w) ?? 86; }
 
-      const addEntry = (e) => {
-        e.preventDefault();
-        const newEntry = {
-          id: Date.now(),
-          date: new Date().toLocaleString('pl-PL'),
-          weight: weight ? parseFloat(weight) : null,
-          exercise,
-          mood,
-          notes
-        };
-        setEntries([newEntry, ...entries]);
-        setWeight('');
-        setExercise('');
-        setMood('dobry');
-        setNotes('');
-      };
+function drawChart(canvas, entries, rangeMs, todayMs) {
+  const dpr  = window.devicePixelRatio || 1;
+  const W    = canvas.parentElement ? canvas.parentElement.clientWidth : 580;
+  const H    = 320;
+  canvas.width  = W * dpr;
+  canvas.height = H * dpr;
+  canvas.style.width  = W + "px";
+  canvas.style.height = H + "px";
+  const ctx = canvas.getContext("2d");
+  ctx.scale(dpr, dpr);
 
-      const deleteEntry = (id) => {
-        setEntries(entries.filter(entry => entry.id !== id));
-      };
+  const PAD = { top: 14, right: 48, bottom: 34, left: 46 };
+  const pW  = W - PAD.left - PAD.right;
+  const pH  = H - PAD.top  - PAD.bottom;
+  const minY = 84, maxY = 113;
+  const sorted0  = [...entries].sort((a, b) => a.date.localeCompare(b.date));
+  const anchorMs = sorted0.length > 0 ? dateToMs(sorted0[sorted0.length - 1].date) : todayMs;
+  const winStart = anchorMs - rangeMs * 0.75;
+  const winEnd   = anchorMs + rangeMs * 0.25;
 
-      const avgWeight = entries.filter(e => e.weight).length > 0
-        ? (entries.filter(e => e.weight).reduce((sum, e) => sum + e.weight, 0) / entries.filter(e => e.weight).length).toFixed(1)
-        : '---';
+  const xOf = ms  => PAD.left + ((ms  - winStart) / (winEnd   - winStart)) * pW;
+  const yOf = val => PAD.top  + (1   - (val - minY) / (maxY   - minY))    * pH;
 
-      const totalExercises = entries.filter(e => e.exercise).length;
+  ctx.clearRect(0, 0, W, H);
 
-      return (
-        <div className="container">
-          <h1>💚 VitaTrack</h1>
-          <p className="subtitle">Zdrowie · Waga · Styl życia</p>
+  // Horizontal grid
+  ctx.strokeStyle = "rgba(255,255,255,0.05)";
+  ctx.lineWidth = 0.5;
+  for (let kg = 84; kg <= 112; kg += 4) {
+    const y = yOf(kg);
+    ctx.beginPath(); ctx.moveTo(PAD.left, y); ctx.lineTo(PAD.left + pW, y); ctx.stroke();
+  }
 
-          <div className="stats">
-            <div className="stat-card">
-              <h3>Średnia waga</h3>
-              <div className="value">{avgWeight} kg</div>
-            </div>
-            <div className="stat-card">
-              <h3>Liczba wpisów</h3>
-              <div className="value">{entries.length}</div>
-            </div>
-            <div className="stat-card">
-              <h3>Ćwiczenia</h3>
-              <div className="value">{totalExercises}</div>
-            </div>
+  // Checkpoint lines + right labels
+  ctx.setLineDash([4, 5]);
+  ctx.lineWidth = 1;
+  const monoFont = "9px monospace";
+  CHECKPOINTS.forEach((cp, idx) => {
+    const y = yOf(cp);
+    ctx.fillStyle = "rgba(245,158,11,0.35)";
+    ctx.font = monoFont;
+    ctx.textAlign = "left";
+    ctx.fillText(`${cp}`, PAD.left + pW + 4, y + 3);
+    if (idx % 2 === 0) {
+      ctx.strokeStyle = "rgba(245,158,11,0.27)";
+      ctx.beginPath(); ctx.moveTo(PAD.left, y); ctx.lineTo(PAD.left + pW, y); ctx.stroke();
+    }
+  });
+  ctx.setLineDash([]);
+
+  // Today vertical line
+  if (todayMs >= winStart && todayMs <= winEnd) {
+    const x = xOf(todayMs);
+    ctx.strokeStyle = "rgba(255,255,255,0.07)";
+    ctx.lineWidth = 1;
+    ctx.beginPath(); ctx.moveTo(x, PAD.top); ctx.lineTo(x, PAD.top + pH); ctx.stroke();
+  }
+
+  // Axes
+  ctx.strokeStyle = "rgba(255,255,255,0.1)";
+  ctx.lineWidth = 0.5;
+  ctx.beginPath();
+  ctx.moveTo(PAD.left, PAD.top);    ctx.lineTo(PAD.left, PAD.top + pH);
+  ctx.moveTo(PAD.left, PAD.top+pH); ctx.lineTo(PAD.left + pW, PAD.top + pH);
+  ctx.stroke();
+
+  // Y labels
+  ctx.fillStyle = "#4b5563";
+  ctx.font = "10px monospace";
+  ctx.textAlign = "right";
+  for (let kg = 88; kg <= 112; kg += 4) {
+    ctx.fillText(`${kg}`, PAD.left - 5, yOf(kg) + 3);
+  }
+
+  // X ticks
+  const days = rangeMs / DAY_MS;
+  const step = days <= 7 ? 1 : days <= 21 ? 2 : days <= 60 ? 7 : days <= 120 ? 14 : 30;
+  const firstTick = Math.ceil(winStart / (step * DAY_MS)) * (step * DAY_MS);
+  ctx.fillStyle = "#4b5563";
+  ctx.font = "10px monospace";
+  ctx.textAlign = "center";
+  for (let t = firstTick; t <= winEnd; t += step * DAY_MS) {
+    const x = xOf(t);
+    ctx.fillText(msToLabel(t), x, PAD.top + pH + 18);
+    ctx.strokeStyle = "rgba(255,255,255,0.07)";
+    ctx.lineWidth = 0.5;
+    ctx.beginPath(); ctx.moveTo(x, PAD.top + pH); ctx.lineTo(x, PAD.top + pH + 4); ctx.stroke();
+  }
+
+  const sorted = [...entries].sort((a, b) => a.date.localeCompare(b.date));
+
+  // Weight line
+  const visible = sorted
+    .map(e => ({ ms: dateToMs(e.date), w: e.weight }))
+    .filter(p => p.ms >= winStart && p.ms <= winEnd);
+
+  if (visible.length >= 2) {
+    ctx.strokeStyle = "#22c55e";
+    ctx.lineWidth = 2.5;
+    ctx.lineJoin = "round";
+    ctx.beginPath();
+    visible.forEach((p, i) => {
+      i === 0 ? ctx.moveTo(xOf(p.ms), yOf(p.w)) : ctx.lineTo(xOf(p.ms), yOf(p.w));
+    });
+    ctx.stroke();
+  }
+
+  // Dots
+  visible.forEach((p, i) => {
+    const isLast = i === visible.length - 1;
+    ctx.beginPath();
+    ctx.arc(xOf(p.ms), yOf(p.w), isLast ? 5 : 3, 0, Math.PI * 2);
+    ctx.fillStyle = isLast ? "#22c55e" : "rgba(34,197,94,0.65)";
+    ctx.fill();
+    if (isLast) {
+      ctx.strokeStyle = "rgba(255,255,255,0.7)";
+      ctx.lineWidth = 1.5;
+      ctx.stroke();
+    }
+  });
+
+  // Weight label on last visible point
+  if (visible.length > 0) {
+    const p = visible[visible.length - 1];
+    const x = xOf(p.ms), y = yOf(p.w);
+    ctx.fillStyle = "#22c55e";
+    ctx.font = "bold 11px monospace";
+    ctx.textAlign = x > PAD.left + pW - 60 ? "right" : "left";
+    ctx.fillText(`${p.w.toFixed(1)} kg`, x + (x > PAD.left + pW - 60 ? -10 : 10), y - 8);
+  }
+}
+
+function DatePicker({ value, onChange }) {
+  const [open, setOpen] = useState(false);
+  const [viewing, setViewing] = useState(() => {
+    const d = value ? new Date(value + "T00:00:00") : new Date();
+    return { year: d.getFullYear(), month: d.getMonth() };
+  });
+  const { year, month } = viewing;
+  const totalDays   = new Date(year, month + 1, 0).getDate();
+  const startOffset = (new Date(year, month, 1).getDay() + 6) % 7;
+  const cells = [...Array(startOffset).fill(null), ...Array.from({length:totalDays},(_,i)=>i+1)];
+  const sel   = value ? new Date(value + "T00:00:00") : null;
+
+  return (
+    <div style={{ position:"relative" }}>
+      <button onClick={() => setOpen(o => !o)} style={{
+        background:"rgba(255,255,255,0.04)", border:"1px solid rgba(255,255,255,0.1)",
+        borderRadius:8, color:"#cbd5e1", padding:"8px 12px", fontSize:13,
+        fontFamily:"monospace", cursor:"pointer", minWidth:130, textAlign:"left",
+      }}>{value || "wybierz datę"}</button>
+      {open && (
+        <div style={{ position:"absolute", top:"calc(100% + 6px)", left:0, zIndex:200,
+          background:"#1e2d42", border:"1px solid rgba(255,255,255,0.12)",
+          borderRadius:10, padding:12, width:236 }}>
+          <div style={{ display:"flex", justifyContent:"space-between", alignItems:"center", marginBottom:10 }}>
+            <button onClick={() => setViewing(v => ({ month: v.month===0?11:v.month-1, year: v.month===0?v.year-1:v.year }))}
+              style={{ background:"none", border:"none", color:"#94a3b8", cursor:"pointer", fontSize:16, padding:"0 6px" }}>‹</button>
+            <span style={{ fontSize:12, fontFamily:"monospace", color:"#f1f5f9" }}>{MONTHS_FULL[month]} {year}</span>
+            <button onClick={() => setViewing(v => ({ month: v.month===11?0:v.month+1, year: v.month===11?v.year+1:v.year }))}
+              style={{ background:"none", border:"none", color:"#94a3b8", cursor:"pointer", fontSize:16, padding:"0 6px" }}>›</button>
           </div>
-
-          <div className="form-section">
-            <h2>Dodaj wpis</h2>
-            <form onSubmit={addEntry}>
-              <div className="form-group">
-                <label>Waga (kg)</label>
-                <input
-                  type="number"
-                  step="0.1"
-                  value={weight}
-                  onChange={(e) => setWeight(e.target.value)}
-                  placeholder="np. 75.5"
-                />
-              </div>
-              <div className="form-group">
-                <label>Ćwiczenia</label>
-                <input
-                  type="text"
-                  value={exercise}
-                  onChange={(e) => setExercise(e.target.value)}
-                  placeholder="np. Bieganie 30 min"
-                />
-              </div>
-              <div className="form-group">
-                <label>Nastrój</label>
-                <select value={mood} onChange={(e) => setMood(e.target.value)}>
-                  <option value="świetny">😊 Świetny</option>
-                  <option value="dobry">🙂 Dobry</option>
-                  <option value="neutralny">😐 Neutralny</option>
-                  <option value="słaby">😔 Słaby</option>
-                </select>
-              </div>
-              <div className="form-group">
-                <label>Notatki</label>
-                <textarea
-                  value={notes}
-                  onChange={(e) => setNotes(e.target.value)}
-                  placeholder="Dodatkowe obserwacje..."
-                  rows="3"
-                />
-              </div>
-              <button type="submit">Dodaj wpis</button>
-            </form>
+          <div style={{ display:"grid", gridTemplateColumns:"repeat(7,1fr)", gap:2, marginBottom:4 }}>
+            {DAYS_SHORT.map(d => <div key={d} style={{ fontSize:9, color:"#475569", textAlign:"center", fontFamily:"monospace" }}>{d}</div>)}
           </div>
-
-          <div className="form-section">
-            <h2>Historia wpisów</h2>
-            <div className="entry-list">
-              {entries.length === 0 ? (
-                <p style={{textAlign: 'center', color: '#999'}}>Brak wpisów. Dodaj pierwszy!</p>
-              ) : (
-                entries.map(entry => (
-                  <div key={entry.id} className="entry">
-                    <div className="entry-header">
-                      <span className="entry-date">{entry.date}</span>
-                      <button className="delete-btn" onClick={() => deleteEntry(entry.id)}>Usuń</button>
-                    </div>
-                    {entry.weight && <p><strong>Waga:</strong> {entry.weight} kg</p>}
-                    {entry.exercise && <p><strong>Ćwiczenia:</strong> {entry.exercise}</p>}
-                    <p><strong>Nastrój:</strong> {entry.mood}</p>
-                    {entry.notes && <p><strong>Notatki:</strong> {entry.notes}</p>}
-                  </div>
-                ))
-              )}
-            </div>
+          <div style={{ display:"grid", gridTemplateColumns:"repeat(7,1fr)", gap:2 }}>
+            {cells.map((d, i) => {
+              if (!d) return <div key={`_${i}`}/>;
+              const isSel = sel && sel.getFullYear()===year && sel.getMonth()===month && sel.getDate()===d;
+              const isNow = new Date().getFullYear()===year && new Date().getMonth()===month && new Date().getDate()===d;
+              return (
+                <button key={d} onClick={() => {
+                  onChange(`${year}-${String(month+1).padStart(2,"0")}-${String(d).padStart(2,"0")}`);
+                  setOpen(false);
+                }} style={{
+                  background: isSel?"#22c55e": isNow?"rgba(34,197,94,0.15)":"none",
+                  border:"none", borderRadius:6,
+                  color: isSel?"#052e16": isNow?"#22c55e":"#cbd5e1",
+                  fontSize:11, fontFamily:"monospace", padding:"5px 0", cursor:"pointer",
+                }}>{d}</button>
+              );
+            })}
           </div>
         </div>
-      );
-    }
+      )}
+    </div>
+  );
+}
 
-    ReactDOM.render(<VitaTrack />, document.getElementById('root'));
-  </script>
-</body>
-</html>
+function HealthTracker() {
+  const todayMs = (() => { const d = new Date(); d.setHours(0,0,0,0); return d.getTime(); })();
+
+  const [entries,     setEntries]     = useState(INITIAL_DATA);
+  const [inputWeight, setInputWeight] = useState("");
+  const [inputDate,   setInputDate]   = useState(msToDateStr(todayMs));
+  const [status,      setStatus]      = useState("");
+  const [loaded,      setLoaded]      = useState(false);
+  const [rangeMs,     setRangeMs]     = useState(28 * DAY_MS);
+
+  const canvasRef = useRef(null);
+  const wrapRef   = useRef(null);
+
+  useEffect(() => {
+    try {
+      const
