@@ -247,4 +247,140 @@ function HealthTracker() {
 
   useEffect(() => {
     try {
-      const
+      const saved = localStorage.getItem(STORAGE_KEY);
+        if (saved) setEntries(JSON.parse(saved));
+      } catch {}
+      setLoaded(true);
+    })();
+  }, []);
+
+  useEffect(() => {
+    if (loaded) {
+      try {
+        localStorage.setItem(STORAGE_KEY, JSON.stringify(entries));
+      } catch {}
+    }
+  }, [entries, loaded]);
+
+  const redraw = useCallback(() => {
+    if (canvasRef.current) drawChart(canvasRef.current, entries, rangeMs, todayMs);
+  }, [entries, rangeMs, todayMs]);
+
+  useEffect(() => {
+    if (!loaded) return;
+    const id = setTimeout(redraw, 40);
+    return () => clearTimeout(id);
+  }, [loaded, redraw]);
+
+  useEffect(() => {
+    const el = wrapRef.current;
+    if (!el) return;
+    const ro = new ResizeObserver(() => setTimeout(redraw, 20));
+    ro.observe(el);
+    return () => ro.disconnect();
+  }, [redraw]);
+
+  useEffect(() => {
+    const el = wrapRef.current;
+    if (!el) return;
+    const onWheel = e => {
+      e.preventDefault();
+      setRangeMs(p => Math.max(4*DAY_MS, Math.min(400*DAY_MS, Math.round(p * (e.deltaY > 0 ? 1.18 : 0.85)))));
+    };
+    el.addEventListener("wheel", onWheel, { passive: false });
+    return () => el.removeEventListener("wheel", onWheel);
+  }, []);
+
+  function addEntry() {
+    const w = parseFloat(parseFloat(inputWeight).toFixed(1));
+    if (!inputWeight || isNaN(w)) { setStatus("Podaj prawid\u0142ow\u0105 wag\u0119."); return; }
+    const exists = entries.find(e => e.date === inputDate);
+    setEntries(exists
+      ? entries.map(e => e.date===inputDate ? {...e, weight:w} : e)
+      : [...entries, { date:inputDate, weight:w }]
+    );
+    setStatus(exists ? `Zaktualizowano ${formatDate(inputDate)}.` : `Dodano ${w} kg \u2014 ${formatDate(inputDate)}`);
+    setInputWeight("");
+  }
+
+  const sorted   = [...entries].sort((a,b)=>a.date.localeCompare(b.date));
+  const latest   = sorted[sorted.length-1];
+  const prev     = sorted[sorted.length-2];
+  const delta    = latest && prev ? latest.weight - prev.weight : null;
+  const nextCp   = latest ? nextCheckpoint(latest.weight) : null;
+  const distToCp = latest ? (latest.weight - nextCp).toFixed(1) : null;
+  const progress = latest ? Math.round(((110 - latest.weight) / 24) * 100) : 0;
+
+  return (
+    <div style={{ minHeight:"100vh", background:"#1a2333", color:"#f1f5f9", fontFamily:"sans-serif" }}>
+
+      <div style={{ borderBottom:"1px solid rgba(255,255,255,0.06)", padding:"20px 24px 16px", display:"flex", alignItems:"baseline", gap:10 }}>
+        <span style={{ fontSize:18, fontWeight:500, letterSpacing:"-0.02em", fontFamily:"'DM Sans',sans-serif" }}>weight tracker</span>
+        <span style={{ fontSize:11, color:"#334155", fontFamily:"monospace" }}>v0.2</span>
+      </div>
+
+      <div style={{ padding:"20px 24px", maxWidth:680, margin:"0 auto" }}>
+
+        {latest && (
+          <div style={{ display:"grid", gridTemplateColumns:"1fr 1fr 1fr", gap:10, marginBottom:20 }}>
+            {[
+              { label:"aktualna waga",       value:`${latest.weight.toFixed(1)} kg`, sub: delta!==null ? `${delta>0?"+":""}${delta.toFixed(1)} kg vs poprzedni` : "pierwszy wpis", color: delta!==null&&delta<0?"#22c55e":delta>0?"#f87171":"#94a3b8" },
+              { label:"nast\u0119pny checkpoint", value:`${nextCp} kg`,                  sub:`jeszcze ${distToCp} kg`, color:"#f59e0b" },
+              { label:"post\u0119p do celu",      value:`${progress}%`,                  sub:"cel: 86 kg",            color:"#818cf8" },
+            ].map(s => (
+              <div key={s.label} style={{ background:"rgba(255,255,255,0.03)", border:"1px solid rgba(255,255,255,0.06)", borderRadius:10, padding:"12px 14px" }}>
+                <div style={{ fontSize:10, color:"#475569", fontFamily:"monospace", letterSpacing:"0.06em", marginBottom:6, textTransform:"uppercase" }}>{s.label}</div>
+                <div style={{ fontSize:22, fontWeight:300, color:s.color, letterSpacing:"-0.02em", lineHeight:1 }}>{s.value}</div>
+                <div style={{ fontSize:11, color:"#475569", marginTop:5 }}>{s.sub}</div>
+              </div>
+            ))}
+          </div>
+        )}
+
+        <div ref={wrapRef} style={{ background:"rgba(255,255,255,0.02)", border:"1px solid rgba(255,255,255,0.06)", borderRadius:12, padding:"16px 16px 10px", marginBottom:20 }}>
+          <canvas ref={canvasRef} style={{ display:"block" }} />
+          <div style={{ display:"flex", justifyContent:"space-between", marginTop:8 }}>
+            <span style={{ fontSize:10, color:"#334155", fontFamily:"monospace" }}>\u2195 scroll = zoom \u00b7 {Math.round(rangeMs/DAY_MS)} dni</span>
+            <span style={{ fontSize:10, color:"#334155", fontFamily:"monospace" }}>{msToLabel(todayMs-rangeMs*0.75)} \u2192 {msToLabel(todayMs+rangeMs*0.25)}</span>
+          </div>
+        </div>
+
+        <div style={{ background:"rgba(255,255,255,0.02)", border:"1px solid rgba(255,255,255,0.06)", borderRadius:12, padding:16, marginBottom:16 }}>
+          <div style={{ fontSize:10, color:"#475569", fontFamily:"monospace", letterSpacing:"0.06em", marginBottom:12, textTransform:"uppercase" }}>nowy wpis</div>
+          <div style={{ display:"flex", gap:8, alignItems:"center", flexWrap:"wrap" }}>
+            <DatePicker value={inputDate} onChange={setInputDate}/>
+            <input type="number" step="0.1" placeholder="waga (kg)" value={inputWeight}
+              onChange={e=>setInputWeight(e.target.value)} onKeyDown={e=>e.key==="Enter"&&addEntry()}
+              style={{ background:"rgba(255,255,255,0.04)", border:"1px solid rgba(255,255,255,0.1)", borderRadius:8, color:"#f1f5f9", padding:"8px 12px", fontSize:13, fontFamily:"monospace", outline:"none", width:120 }}/>
+            <button onClick={addEntry} style={{ background:"#22c55e", border:"none", borderRadius:8, color:"#052e16", padding:"8px 18px", fontSize:13, fontWeight:500, cursor:"pointer" }}>Dodaj</button>
+          </div>
+          {status && <div style={{ fontSize:12, color:"#22c55e", marginTop:10, fontFamily:"monospace" }}>\u2713 {status}</div>}
+        </div>
+
+        <div style={{ background:"rgba(255,255,255,0.02)", border:"1px solid rgba(255,255,255,0.06)", borderRadius:12, padding:16 }}>
+          <div style={{ fontSize:10, color:"#475569", fontFamily:"monospace", letterSpacing:"0.06em", marginBottom:12, textTransform:"uppercase" }}>historia</div>
+          {[...sorted].reverse().map((e, i) => {
+            const prevE = sorted[sorted.length-2-i];
+            const d = prevE ? e.weight - prevE.weight : null;
+            return (
+              <div key={e.date} style={{ display:"flex", justifyContent:"space-between", alignItems:"center", padding:"6px 0", borderBottom:"1px solid rgba(255,255,255,0.04)" }}>
+                <span style={{ fontSize:12, color:"#64748b", fontFamily:"monospace" }}>{formatDate(e.date)}</span>
+                <div style={{ display:"flex", alignItems:"center", gap:10 }}>
+                  {CHECKPOINTS.includes(e.weight) && <span style={{ fontSize:9, color:"#f59e0b", background:"rgba(245,158,11,0.1)", borderRadius:4, padding:"2px 6px", fontFamily:"monospace" }}>CHECKPOINT</span>}
+                  {d!==null && <span style={{ fontSize:11, color:d<0?"#22c55e":d>0?"#f87171":"#475569", fontFamily:"monospace" }}>{d>0?"+":""}{d.toFixed(1)}</span>}
+                  <span style={{ fontSize:14, color:"#f1f5f9", fontFamily:"monospace", minWidth:60, textAlign:"right" }}>{e.weight.toFixed(1)} kg</span>
+                </div>
+              </div>
+            );
+          })}
+        </div>
+
+      </div>
+    </div>
+  );
+}
+
+ReactDOM.render(<HealthTracker />, document.getElementById('root'));
+  </script>
+</body>
+</html>
