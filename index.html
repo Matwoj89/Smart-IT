@@ -14,50 +14,49 @@
   <header class="header">
     <h1>Smart IT <span class="neon">●</span></h1>
     <p class="subtitle">Matrixowy Serwis Komputerowy – Ząbki</p>
-
-    <!-- NAV -->
-    <nav class="main-nav">
-      <a href="#uslugi" class="nav-link">Usługi</a>
-      <a href="#kontakt" class="nav-link">Kontakt</a>
-
-      <!-- PROJEKTY DROPDOWN -->
-      <div class="nav-dropdown" id="projectsDropdown">
-        <button class="nav-link nav-dropdown-btn" onclick="toggleDropdown()">
-          Projekty <span class="dropdown-arrow">▾</span>
-        </button>
-        <div class="dropdown-menu" id="dropdownMenu">
-          <div class="dropdown-label">Moje projekty</div>
-
-          <a class="dropdown-item" href="https://claude.ai/project/01jnntfzxbcss96fxepc9djvfj" target="_blank">
-            <span class="proj-icon">💚</span>
-            <div class="proj-info">
-              <span class="proj-name">VitaTrack</span>
-              <span class="proj-desc">Zdrowie · Waga · Styl życia</span>
-            </div>
-            <span class="proj-arrow">↗</span>
-          </a>
-
-          <a class="dropdown-item dropdown-item--empty" href="#" onclick="return false;">
-            <span class="proj-icon">📈</span>
-            <div class="proj-info">
-              <span class="proj-name">PortfolioAI</span>
-              <span class="proj-desc">Inwestycje · Portfel · Strategia</span>
-            </div>
-            <span class="proj-badge">wkrótce</span>
-          </a>
-
-          <a class="dropdown-item dropdown-item--empty" href="#" onclick="return false;">
-            <span class="proj-icon">👶</span>
-            <div class="proj-info">
-              <span class="proj-name">BabyLog</span>
-              <span class="proj-desc">Zdrowie syna · Rozwój · Pamiętnik</span>
-            </div>
-            <span class="proj-badge">wkrótce</span>
-          </a>
-        </div>
-      </div>
-    </nav>
   </header>
+
+  <!-- NAV — osobny element NA ZEWNĄTRZ headera -->
+  <nav class="main-nav">
+    <a href="#uslugi" class="nav-link">Usługi</a>
+    <a href="#kontakt" class="nav-link">Kontakt</a>
+
+    <div class="nav-dropdown" id="projectsDropdown">
+      <button class="nav-link nav-dropdown-btn" onclick="toggleDropdown()">
+        Projekty <span class="dropdown-arrow">▾</span>
+      </button>
+      <div class="dropdown-menu" id="dropdownMenu">
+        <div class="dropdown-label">Moje projekty</div>
+
+        <a class="dropdown-item" href="https://claude.ai/project/019ce75e-5136-7053-af77-b93992422f7d" target="_blank" rel="noopener">
+          <span class="proj-icon">💚</span>
+          <div class="proj-info">
+            <span class="proj-name">VitaTrack</span>
+            <span class="proj-desc">Zdrowie · Waga · Styl życia</span>
+          </div>
+          <span class="proj-arrow">↗</span>
+        </a>
+
+        <a class="dropdown-item dropdown-item--empty" href="#" onclick="return false;">
+          <span class="proj-icon">📈</span>
+          <div class="proj-info">
+            <span class="proj-name">PortfolioAI</span>
+            <span class="proj-desc">Inwestycje · Portfel · Strategia</span>
+          </div>
+          <span class="proj-badge">wkrótce</span>
+        </a>
+
+        <a class="dropdown-item dropdown-item--empty" href="#" onclick="return false;">
+          <span class="proj-icon">👶</span>
+          <div class="proj-info">
+            <span class="proj-name">BabyLog</span>
+            <span class="proj-desc">Zdrowie syna · Rozwój · Pamiętnik</span>
+          </div>
+          <span class="proj-badge">wkrótce</span>
+        </a>
+      </div>
+    </div>
+  </nav>
   
   <main>
     <section class="hero" id="uslugi">
@@ -119,7 +118,6 @@
       menu.classList.toggle('open');
       dropdown.classList.toggle('active');
     }
-    // Zamknij po kliknięciu poza
     document.addEventListener('click', function(e) {
       const dropdown = document.getElementById('projectsDropdown');
       if (!dropdown.contains(e.target)) {
